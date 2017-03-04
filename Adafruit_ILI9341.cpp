@@ -601,3 +601,30 @@ void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
     writeFillRect(x,y,w,h,color);
     endWrite();
 }
+
+// This code was ported/adapted from https://github.com/PaulStoffregen/ILI9341_t3
+// by Marc MERLIN
+void Adafruit_ILI9341::setAddr(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
+	writeCommand(ILI9341_CASET); // Column addr set
+	SPI_WRITE16(x0);   // XSTART
+	SPI_WRITE16(x1);   // XEND
+	writeCommand(ILI9341_PASET); // Row addr set
+	SPI_WRITE16(y0);   // YSTART
+	SPI_WRITE16(y1);   // YEND
+	writeCommand(ILI9341_RAMWR);
+}
+
+// See examples/pictureEmbed to use this.
+void Adafruit_ILI9341::writeRect(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors) {
+        startWrite();
+	setAddr(x, y, x+w-1, y+h-1);
+	// setaddrwindow does not work if x!=1 (the picture gets offset) but setAddr works
+	//setAddrWindow(x, y, x+w-1, y+h-1);
+	for(y=h; y>0; y--) {
+		for(x=w; x>1; x--) {
+			SPI_WRITE16(*pcolors++);
+		}
+		SPI_WRITE16(*pcolors++);
+	}
+        endWrite();
+}
