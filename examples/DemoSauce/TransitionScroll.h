@@ -104,7 +104,8 @@ void TransitionScroll::perFrame( ILI9341_t3 tft, FrameParams frameParams ) {
 
 		for( uint_fast8_t line=0; line<staggerHeight; line++ ) {
 			uint_fast16_t y = startY + line;
-			tft.readRect( 0, y, w, 1, _pixels );
+			// FIXME: this is missing in the driver, do without it for now.
+			//tft.readRect( 0, y, w, 1, _pixels );
 			tft.writeRect( staggerX, y, w-staggerX, 1, _pixels );
 		}
 
