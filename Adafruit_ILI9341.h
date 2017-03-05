@@ -155,10 +155,10 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
         void      drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
         void      fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 
-	void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
+	void drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
 // The code above came from ILI9341_t3 and was called writeRect, keeping the old name for 
 // compatibility with code that uses the original name.
-#define writeRect drawRect
+#define writeRect drawBitmap
 
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
 

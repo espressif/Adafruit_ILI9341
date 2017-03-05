@@ -604,7 +604,7 @@ void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 
 // This code was ported/adapted from https://github.com/PaulStoffregen/ILI9341_t3
 // by Marc MERLIN. See examples/pictureEmbed to use this.
-void Adafruit_ILI9341::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors) {
+void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors) {
         startWrite();
 	setAddrWindow(x, y, w, h);
 	for(y=h; y>0; y--) {
