@@ -2,7 +2,7 @@
 #define TWISTY_TEXT_H__
 
 #include <Arduino.h>
-#include "ILI9341_t3.h"
+#include "Adafruit_ILI9341.h"
 #include "MathUtil.h"
 #include "TwistyTextFont.h"
 #include "BaseAnimation.h"
@@ -29,15 +29,15 @@ class TwistyText : public BaseAnimation {
 public:
 	TwistyText() : BaseAnimation() {};
 
-	void init( ILI9341_t3 tft );
+	void init( Adafruit_ILI9341 tft );
 	uint_fast16_t bgColor( void );
 	String title();
-	void reset( ILI9341_t3 tft );
+	void reset( Adafruit_ILI9341 tft );
 
 	boolean willForceTransition( void );
 	boolean forceTransitionNow( void );
 
-	void perFrame( ILI9341_t3 tft, FrameParams frameParams );
+	void perFrame( Adafruit_ILI9341 tft, FrameParams frameParams );
 
 private:
 	float _initPhase = 0;
@@ -47,7 +47,7 @@ private:
 	boolean _drawnColumns[CHARS_PER_LINE*7];
 };
 
-void TwistyText::init( ILI9341_t3 tft ) {
+void TwistyText::init( Adafruit_ILI9341 tft ) {
 	_bgColor = tft.color565( 0x0, 0x0, 0x33 );
 }
 
@@ -59,7 +59,7 @@ String TwistyText::title() {
 	return "TwistyText";
 }
 
-void TwistyText::reset( ILI9341_t3 tft ) {
+void TwistyText::reset( Adafruit_ILI9341 tft ) {
 	_phase = _initPhase = LINE_COUNT * random(999);
 
 	for( uint_fast8_t m=0; m<12; m++ ) {
@@ -79,7 +79,7 @@ boolean TwistyText::forceTransitionNow( void ) {
 	return _phase > (_initPhase + LINE_COUNT);
 }
 
-void TwistyText::perFrame( ILI9341_t3 tft, FrameParams frameParams ) {
+void TwistyText::perFrame( Adafruit_ILI9341 tft, FrameParams frameParams ) {
 	uint_fast16_t w = (uint_fast16_t)tft.width();
   uint_fast16_t h = (uint_fast16_t)tft.height();
 	uint_fast16_t w_2 = (w>>1);

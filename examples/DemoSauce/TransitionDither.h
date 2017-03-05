@@ -2,7 +2,7 @@
 #define TRANSITION_DITHER_H__
 
 #include <Arduino.h>
-#include "ILI9341_t3.h"
+#include "Adafruit_ILI9341.h"
 #include "MathUtil.h"
 #include "BaseTransition.h"
 
@@ -14,9 +14,9 @@ class TransitionDither : public BaseTransition {
 public:
 	TransitionDither() : BaseTransition() {};
 
-  void init( ILI9341_t3 tft );
-	void restart( ILI9341_t3 tft, uint_fast16_t color );
-	void perFrame( ILI9341_t3 tft, FrameParams frameParams );
+  void init( Adafruit_ILI9341 tft );
+	void restart( Adafruit_ILI9341 tft, uint_fast16_t color );
+	void perFrame( Adafruit_ILI9341 tft, FrameParams frameParams );
   boolean isComplete();
 
 private:
@@ -25,11 +25,11 @@ private:
 	uint_fast8_t _step;
 };
 
-void TransitionDither::init( ILI9341_t3 tft ) {
+void TransitionDither::init( Adafruit_ILI9341 tft ) {
 
 }
 
-void TransitionDither::restart( ILI9341_t3 tft, uint_fast16_t inColor ) {
+void TransitionDither::restart( Adafruit_ILI9341 tft, uint_fast16_t inColor ) {
   //uint_fast16_t w = tft.width();
   //uint_fast16_t h = tft.height();
 	_phase = 0;
@@ -37,7 +37,7 @@ void TransitionDither::restart( ILI9341_t3 tft, uint_fast16_t inColor ) {
 	_step = 0;
 }
 
-void TransitionDither::perFrame( ILI9341_t3 tft, FrameParams frameParams ) {
+void TransitionDither::perFrame( Adafruit_ILI9341 tft, FrameParams frameParams ) {
   uint_fast16_t w = (uint_fast16_t)tft.width();
   uint_fast16_t h = (uint_fast16_t)tft.height();
 

@@ -2,7 +2,7 @@
 #define TRANSITION_SQUARES_H__
 
 #include <Arduino.h>
-#include "ILI9341_t3.h"
+#include "Adafruit_ILI9341.h"
 #include "MathUtil.h"
 #include "BaseTransition.h"
 
@@ -16,9 +16,9 @@ class TransitionSquares : public BaseTransition {
 public:
 	TransitionSquares() : BaseTransition() {};
 
-  void init( ILI9341_t3 tft );
-	void restart( ILI9341_t3 tft, uint_fast16_t color );
-	void perFrame( ILI9341_t3 tft, FrameParams frameParams );
+  void init( Adafruit_ILI9341 tft );
+	void restart( Adafruit_ILI9341 tft, uint_fast16_t color );
+	void perFrame( Adafruit_ILI9341 tft, FrameParams frameParams );
   boolean isComplete();
 
 private:
@@ -27,11 +27,11 @@ private:
   boolean _isComplete = false;
 };
 
-void TransitionSquares::init( ILI9341_t3 tft ) {
+void TransitionSquares::init( Adafruit_ILI9341 tft ) {
 
 }
 
-void TransitionSquares::restart( ILI9341_t3 tft, uint_fast16_t inColor ) {
+void TransitionSquares::restart( Adafruit_ILI9341 tft, uint_fast16_t inColor ) {
   //uint_fast16_t w = tft.width();
   //uint_fast16_t h = tft.height();
 	_phase = 0;
@@ -44,7 +44,7 @@ float easeInOutSine( float p ) {
   return 0.5f + ( sin( ( p - 0.5f ) * M_PI ) * 0.5f );
 }
 
-void TransitionSquares::perFrame( ILI9341_t3 tft, FrameParams frameParams ) {
+void TransitionSquares::perFrame( Adafruit_ILI9341 tft, FrameParams frameParams ) {
   uint_fast16_t w = (uint_fast16_t)tft.width();
   uint_fast16_t h = (uint_fast16_t)tft.height();
 
