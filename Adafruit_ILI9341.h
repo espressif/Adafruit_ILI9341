@@ -161,7 +161,7 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
 // The code above came from ILI9341_t3 and was called writeRect, keeping the old name for 
 // compatibility with code that uses the original name.
 #define writeRect drawBitmap
-	void setScroll(uint16_t offset);
+#define setScroll scrollTo
 
 	// Convert interface from T3 lib to Adafruit lib (used by examples/DemoSauce
 	void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {

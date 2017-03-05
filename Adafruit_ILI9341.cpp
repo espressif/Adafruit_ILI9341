@@ -421,7 +421,7 @@ void Adafruit_ILI9341::invertDisplay(boolean i) {
 
 void Adafruit_ILI9341::scrollTo(uint16_t y) {
     startWrite();
-    writeCommand(0x37);
+    writeCommand(ILI9341_VSCRSADD);
     spiWrite(y);
     endWrite();
 }
@@ -613,13 +613,5 @@ void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, co
 		}
 		SPI_WRITE16(*pcolors++);
 	}
-        endWrite();
-}
-
-void Adafruit_ILI9341::setScroll(uint16_t offset)
-{
-        startWrite();
-	writeCommand(ILI9341_VSCRSADD);
-	SPI_WRITE16(offset);
         endWrite();
 }
