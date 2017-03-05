@@ -6,7 +6,8 @@
 // https://forum.pjrc.com/threads/32601-SPI-Library-Issue-w-ILI9341-TFT-amp-PN532-NFC-Module-on-Teensy-3-2?p=94534&viewfull=1#post94534
 
 #include "SPI.h"
-#include "ILI9341_t3.h"
+#include <Adafruit_ILI9341.h>
+
 
 // Converted to code with:
 // http://www.rinkydinkelectronics.com/t_imageconverter565.php
