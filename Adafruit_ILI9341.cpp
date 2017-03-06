@@ -497,7 +497,8 @@ void Adafruit_ILI9341::writePixel(uint16_t color){
 }
 
 void Adafruit_ILI9341::writePixels(uint16_t * colors, uint32_t len){
-    SPI_WRITE_PIXELS((uint8_t*)colors , len * 2);
+    size_t pixels = len;
+    while(pixels--) SPI_WRITE16(*colors++);
 }
 
 void Adafruit_ILI9341::writeColor(uint16_t color, uint32_t len){
@@ -607,15 +608,6 @@ void Adafruit_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 void Adafruit_ILI9341::drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors) {
         startWrite();
 	setAddrWindow(x, y, w, h);
-	// this is almost the same but not quite as the loop below, using writePixels seems to invert
-	// every other column of pixels
-	//writePixels((uint16_t*) pcolors, w*h);
-	// while this works perfectly:
-	for(y=h; y>0; y--) {
-		for(x=w; x>1; x--) {
-			SPI_WRITE16(*pcolors++);
-		}
-		SPI_WRITE16(*pcolors++);
-	}
+	writePixels((uint16_t*) pcolors, w*h);
         endWrite();
 }
