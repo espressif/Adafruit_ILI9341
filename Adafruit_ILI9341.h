@@ -163,12 +163,6 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
 #define writeRect drawBitmap
 #define setScroll scrollTo
 
-	// Convert interface from T3 lib to Adafruit lib (used by examples/DemoSauce
-	void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {
-		drawRect(x, y, w, h, (const uint16_t) color);
-	}
-
-
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
 
         uint16_t  color565(uint8_t r, uint8_t g, uint8_t b);
