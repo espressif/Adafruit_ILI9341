@@ -64,6 +64,7 @@ typedef volatile uint32_t RwReg;
 
 #define ILI9341_PTLAR   0x30
 #define ILI9341_MADCTL  0x36
+#define ILI9341_VSCRSADD 0x37
 #define ILI9341_PIXFMT  0x3A
 
 #define ILI9341_FRMCTR1 0xB1
@@ -155,6 +156,13 @@ class Adafruit_ILI9341 : public Adafruit_GFX {
         void      drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
         void      drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
         void      fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
+
+	// Compat with ILI9341_T3 lib
+	void drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
+// The code above came from ILI9341_t3 and was called writeRect, keeping the old name for 
+// compatibility with code that uses the original name.
+#define writeRect drawBitmap
+#define setScroll scrollTo
 
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
 
