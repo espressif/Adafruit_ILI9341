@@ -114,6 +114,39 @@ uint32_t WROVER_KIT_LCD::readId() {
     return r;
 }
 
+uint16_t WROVER_KIT_LCD::readPixel(int16_t x, int16_t y) {
+    uint16_t buf[1];
+    readPixels(x, y, 1, 1, buf);
+    return buf[0];
+}
+
+uint16_t WROVER_KIT_LCD::readPixels(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *block) {
+    uint8_t f;
+    uint16_t len = w*h;
+    uint16_t ret = len;
+    uint32_t freq = _freq;
+    // colors get garbled if speed is set higher than this :-(
+    if(_freq > 16000000){
+        _freq = 16000000;
+    }
+    startWrite(); // begin transaction
+    setAddrWindow(x, y, w, h);
+    writeCommand(0xD9);
+    SPI.write(0x10);
+    writeCommand(WROVER_RAMRD);
+    f = SPI.transfer(0); // dummy read
+    f = SPI.transfer(0); // dummy read
+    while(len--) {    
+      uint8_t r = SPI.transfer(0);
+      uint8_t g = SPI.transfer(0);
+      uint8_t b = SPI.transfer(0);
+      *block++ = color565(r, g, b);
+    }
+    endWrite(); // end transaction
+    _freq = freq;
+    return ret;
+}
+
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
 uint16_t WROVER_KIT_LCD::color565(uint8_t r, uint8_t g, uint8_t b) {
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3);
