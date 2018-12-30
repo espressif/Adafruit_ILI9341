@@ -179,6 +179,8 @@ class WROVER_KIT_LCD : public Adafruit_GFX {
 
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
         uint32_t  readId();
+        uint16_t  readPixel(int16_t x, int16_t y);
+        uint16_t  readPixels(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *block);
 
         uint16_t  color565(uint8_t r, uint8_t g, uint8_t b);
         void      startBitmap(uint16_t x, uint16_t y, uint16_t w, uint16_t h);
