@@ -114,9 +114,45 @@ uint32_t WROVER_KIT_LCD::readId() {
     return r;
 }
 
+
+
+uint16_t WROVER_KIT_LCD::pullColor() {
+    startWrite();
+    uint16_t color = readPixel();
+    endWrite();
+    return color;
+}
+
+uint16_t WROVER_KIT_LCD::readPixel() {
+    uint16_t buf[1];
+    readPixels(buf, 1);
+    return buf[0];
+}
+
+uint16_t WROVER_KIT_LCD::readPixels(uint16_t *colors, uint32_t len) {
+    uint8_t f;
+    uint16_t ret = len;
+
+    writeCommand(0xD9);
+    SPI.write(0x10);
+    writeCommand(WROVER_RAMRD);
+    f = SPI.transfer(0); // dummy read
+    f = SPI.transfer(0); // dummy read
+    while(len--) {    
+      uint8_t r = SPI.transfer(0);
+      uint8_t g = SPI.transfer(0);
+      uint8_t b = SPI.transfer(0);
+      *colors++ = color565(r, g, b);
+    }
+
+    return ret;
+}
+
+
 uint16_t WROVER_KIT_LCD::readPixel(int16_t x, int16_t y) {
     uint16_t buf[1];
-    readPixels(x, y, 1, 1, buf);
+    setAddrWindow(x, y, 1, 1);
+    readPixels(buf, 1);
     return buf[0];
 }
 
@@ -131,20 +167,10 @@ uint16_t WROVER_KIT_LCD::readPixels(int16_t x, int16_t y, uint16_t w, uint16_t h
     }
     startWrite(); // begin transaction
     setAddrWindow(x, y, w, h);
-    writeCommand(0xD9);
-    SPI.write(0x10);
-    writeCommand(WROVER_RAMRD);
-    f = SPI.transfer(0); // dummy read
-    f = SPI.transfer(0); // dummy read
-    while(len--) {    
-      uint8_t r = SPI.transfer(0);
-      uint8_t g = SPI.transfer(0);
-      uint8_t b = SPI.transfer(0);
-      *block++ = color565(r, g, b);
-    }
+    readPixels(block, len);
     endWrite(); // end transaction
     _freq = freq;
-    return ret;
+    return len;
 }
 
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
