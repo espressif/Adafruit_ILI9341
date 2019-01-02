@@ -115,11 +115,9 @@ uint32_t WROVER_KIT_LCD::readId() {
 }
 
 
-uint16_t WROVER_KIT_LCD::readPixels(uint16_t *colors, uint32_t len) {
+uint32_t WROVER_KIT_LCD::readPixels(uint16_t *colors, uint32_t len) {
     uint8_t f;
-    uint16_t ret = len;
-    writeCommand(0xD9);
-    SPI.write(0x10);
+    uint32_t ret = len;
     writeCommand(WROVER_RAMRD);
     f = SPI.transfer(0); // dummy read
     f = SPI.transfer(0); // dummy read
@@ -137,6 +135,19 @@ uint16_t WROVER_KIT_LCD::readPixel(int16_t x, int16_t y) {
     uint16_t buf[1];
     setAddrWindow(x, y, 1, 1);
     readPixels(buf, 1);
+    return buf[0];
+}
+
+uint16_t WROVER_KIT_LCD::readPixel() {
+    uint32_t freq = _freq;
+    if(_freq > 16000000){
+        _freq = 16000000;
+    }
+    uint16_t buf[1];
+    startWrite(); // begin transaction
+    readPixels(buf, 1);
+    endWrite(); // end transaction
+    _freq = freq;
     return buf[0];
 }
 

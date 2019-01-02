@@ -162,7 +162,7 @@ class WROVER_KIT_LCD : public Adafruit_GFX {
         void      writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
         void      writeFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
         void      writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-        uint16_t  readPixels(uint16_t *colors, uint32_t len);// Transaction API not used by GFX
+        uint32_t  readPixels(uint16_t *colors, uint32_t len);// Transaction API not used by GFX
         uint16_t  readPixel(int16_t x, int16_t y);// Transaction API
         void      endWrite(void);
 
@@ -179,6 +179,7 @@ class WROVER_KIT_LCD : public Adafruit_GFX {
         void      fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
         void      drawBitmap(int16_t x, int16_t y, int16_t w, int16_t h, const uint16_t *pcolors);
         uint16_t  readPixels(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *colors);
+        uint16_t  readPixel(); // read color of the pixel at last cursor position
 
         uint8_t   readcommand8(uint8_t reg, uint8_t index = 0);
         uint32_t  readId();
