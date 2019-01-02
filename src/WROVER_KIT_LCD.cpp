@@ -114,6 +114,61 @@ uint32_t WROVER_KIT_LCD::readId() {
     return r;
 }
 
+
+uint32_t WROVER_KIT_LCD::readPixels(uint16_t *colors, uint32_t len) {
+    uint8_t f;
+    uint32_t ret = len;
+    writeCommand(WROVER_RAMRD);
+    f = SPI.transfer(0); // dummy read
+    f = SPI.transfer(0); // dummy read
+    while(len--) {    
+      uint8_t r = SPI.transfer(0);
+      uint8_t g = SPI.transfer(0);
+      uint8_t b = SPI.transfer(0);
+      *colors++ = color565(r, g, b);
+    }
+    return ret;
+}
+
+
+uint16_t WROVER_KIT_LCD::readPixel(int16_t x, int16_t y) {
+    uint16_t buf[1];
+    setAddrWindow(x, y, 1, 1);
+    readPixels(buf, 1);
+    return buf[0];
+}
+
+uint16_t WROVER_KIT_LCD::readPixel() {
+    uint32_t freq = _freq;
+    if(_freq > 16000000){
+        _freq = 16000000;
+    }
+    uint16_t buf[1];
+    startWrite(); // begin transaction
+    readPixels(buf, 1);
+    endWrite(); // end transaction
+    _freq = freq;
+    return buf[0];
+}
+
+
+uint16_t WROVER_KIT_LCD::readPixels(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *colors) {
+    uint8_t f;
+    uint16_t len = w*h;
+    uint16_t ret = len;
+    uint32_t freq = _freq;
+    // colors get garbled if speed is set higher than this :-(
+    if(_freq > 16000000){
+        _freq = 16000000;
+    }
+    startWrite(); // begin transaction
+    setAddrWindow(x, y, w, h);
+    readPixels(colors, len);
+    endWrite(); // end transaction
+    _freq = freq;
+    return len;
+}
+
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
 uint16_t WROVER_KIT_LCD::color565(uint8_t r, uint8_t g, uint8_t b) {
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3);
