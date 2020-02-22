@@ -23,7 +23,11 @@ And a file ` girl.h` will show in the same folder.
 
 ## How it looks
 
-> ![show1](image generator/show1.jpg)![show2](image generator/show2.jpg)
+
+<figure class="half">
+    <img src="image generator/show1.jpg">
+    <img src="image generator/show2.jpg">
+</figure>
 
 ---
 
